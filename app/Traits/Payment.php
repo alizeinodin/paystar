@@ -27,9 +27,8 @@ trait Payment
         ]);
     }
 
-    private function sign(int $amount, int $order_id, string $callback): bool|string
+    private function sign(string $data): bool|string
     {
-        $data = $amount . "#" . $order_id . "#" . $callback;
         return hash_hmac($this->algorithm, $data, env('PAYSTAR_KEY'));
     }
 
@@ -46,7 +45,7 @@ trait Payment
             'amount' => $amount,
             'order_id' => $order_id,
             'callback' => env('paystar_callback_url'),
-            'sign' => $this->sign($amount, $order_id, env('paystar_callback_url')),
+            'sign' => $this->sign($amount . "#" . $order_id . "#" . env('paystar_callback_url')),
         ];
 
         $response = $this->client->request("POST", '/create', [
@@ -69,5 +68,5 @@ trait Payment
             'body' => $body,
         ]);
     }
-
+    
 }
