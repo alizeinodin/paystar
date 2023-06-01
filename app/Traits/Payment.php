@@ -56,4 +56,18 @@ trait Payment
         return $response->getBody();
     }
 
+    public function payment(string $token): \Psr\Http\Message\ResponseInterface
+    {
+        $body = [
+            'token' => $token,
+        ];
+
+        return $this->client->request("POST", '/payment', [
+            'allow_redirects' => [
+                'strict' => true
+            ],
+            'body' => $body,
+        ]);
+    }
+
 }
