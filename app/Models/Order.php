@@ -26,4 +26,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function creditCard(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(CreditCard::class);
+    }
 }
