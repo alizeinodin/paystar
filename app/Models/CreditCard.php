@@ -12,4 +12,9 @@ class CreditCard extends Model
     protected $fillable = [
         'card_number'
     ];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }
