@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->string('slug');
+            $table->unsignedInteger('price');
             $table->longText('body')->nullable();
             $table->string('index_picture')->nullable();
             $table->timestamps();
