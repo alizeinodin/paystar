@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
 /*
@@ -55,7 +56,13 @@ trait Payment
         return $response->getBody();
     }
 
-    public function payment(string $token): \Psr\Http\Message\ResponseInterface
+    /**
+     * @param string $token
+     *
+     * @return ResponseInterface
+     * @throws GuzzleException
+     */
+    public function payment(string $token): ResponseInterface
     {
         $body = [
             'token' => $token,
@@ -68,5 +75,29 @@ trait Payment
             'body' => $body,
         ]);
     }
-    
+
+    /**
+     * @param int $amount
+     * @param string $ref_num
+     * @param string $card_number
+     * @param string $tracking_code
+     *
+     * @return StreamInterface
+     * @throws GuzzleException
+     */
+    public function verify(int $amount, string $ref_num, string $card_number, string $tracking_code): StreamInterface
+    {
+        $body = [
+            'ref_num' => $ref_num,
+            'amount' => $amount,
+            'sign' => $this->sign($amount . "#" . $ref_num . "#" . $card_number . "#" . $tracking_code),
+        ];
+
+        $response = $this->client->request("POST", '/verify', [
+            'body' => $body
+        ]);
+
+        return $response->getBody();
+    }
+
 }
