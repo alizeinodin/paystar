@@ -21,4 +21,9 @@ class Order extends Model
     protected $casts = [
         'status' => OrderStatus::class
     ];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }
