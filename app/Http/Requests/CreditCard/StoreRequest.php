@@ -22,7 +22,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'card_number' => 'required|numeric|size:16',
+            'card_number' => 'required|string|regex:/^[0-9]+$/|size:16',
         ];
     }
 }
