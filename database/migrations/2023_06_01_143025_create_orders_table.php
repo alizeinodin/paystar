@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('amount');
-            $table->string('ref_num');
+            $table->string('ref_num')->nullable();
             $table->string('status')->default('pending');
             $table->string('transaction_id')->nullable();
             $table->string('tracking_code')->nullable();
