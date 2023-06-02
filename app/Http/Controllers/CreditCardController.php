@@ -13,7 +13,7 @@ class CreditCardController extends Controller
      */
     public function index(): mixed
     {
-        return CreditCard::where(['user_id' => auth('api')->user()->id])->get();
+        return CreditCard::where(['user_id' => auth()->user()->id])->get();
     }
 
     public function store(StoreRequest $request): \Illuminate\Http\JsonResponse
