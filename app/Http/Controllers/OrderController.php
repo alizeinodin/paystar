@@ -67,7 +67,7 @@ class OrderController extends Controller
                 $request['card_number'],
                 $request['tracking_code']);
 
-            if ($response['status'] !== 1) {
+            if ($response->status !== 1) {
                 return response()
                     ->json($response, Response::HTTP_FORBIDDEN);
             }
@@ -77,6 +77,12 @@ class OrderController extends Controller
                 'tracking_code' => $request['tracking_code'],
                 'status' => OrderStatus::ACCEPTED
             ]);
+
+            $response = [
+                'price' => $response->data->price,
+                'ref_num' => $response->data->ref_num,
+                'card_number' => $response->data->card_number,
+            ];
 
             return response()
                 ->json($response, Response::HTTP_ACCEPTED);
