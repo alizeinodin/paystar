@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CreditCardController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,15 @@ Route::middleware('auth:sanctum')->group(function () {
                     ->name('all');
                 Route::post('/store', 'store')
                     ->name('store');
+            });
+        });
+    });
+
+    Route::controller(ProductController::class)->group(function () {
+        Route::prefix('/product')->group(function () {
+            Route::name('product.')->group(function () {
+                Route::get('/all', 'index')
+                    ->name('all');
             });
         });
     });
