@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
 /*
@@ -57,21 +56,21 @@ trait Payment
     /**
      * @param string $token
      *
-     * @return ResponseInterface
+     * @return \stdClass
      * @throws GuzzleException
      */
-    public function payment(string $token): ResponseInterface
+    public function payment(string $token): \stdClass
     {
         $body = [
             'token' => $token,
         ];
 
-        return $this->client->request("POST", '/payment', [
+        return json_decode($this->client->post('pardakht/payment', [
             'allow_redirects' => [
                 'strict' => true
             ],
-            'body' => $body,
-        ]);
+            'form_params' => $body
+        ])->getBody()->getContents());
     }
 
     /**
