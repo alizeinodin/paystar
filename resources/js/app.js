@@ -8,6 +8,7 @@ import './bootstrap';
 import {createApp} from 'vue';
 import ExampleComponent from './components/ExampleComponent.vue';
 import App from './App.vue'
+import router from './router/index.js'
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -16,6 +17,7 @@ import App from './App.vue'
  */
 
 const app = createApp(App);
+app.use(router)
 
 app.component('example-component', ExampleComponent);
 
