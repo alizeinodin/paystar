@@ -12,7 +12,8 @@ class CreditCard extends Model
     use HasFactory;
 
     protected $fillable = [
-        'card_number'
+        'card_number',
+        'user_id'
     ];
 
     public function user(): BelongsTo
