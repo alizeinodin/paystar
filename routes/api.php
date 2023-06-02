@@ -49,6 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::name('product.')->group(function () {
                 Route::get('/all', 'index')
                     ->name('all');
+                Route::get('/{product}', 'get')
+                    ->name('get');
             });
         });
     });
