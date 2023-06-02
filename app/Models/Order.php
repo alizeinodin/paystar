@@ -18,6 +18,7 @@ class Order extends Model
         'ref_num',
         'transaction_id',
         'tracking_code',
+        'credit_card_id',
     ];
 
     protected $casts = [
