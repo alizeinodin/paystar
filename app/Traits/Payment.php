@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Psr\Http\Message\StreamInterface;
 
 /*
  * The Payment Trait is for Connection with PayStar
@@ -79,10 +78,10 @@ trait Payment
      * @param string $card_number
      * @param string $tracking_code
      *
-     * @return StreamInterface
+     * @return \stdClass
      * @throws GuzzleException
      */
-    public function verify(int $amount, string $ref_num, string $card_number, string $tracking_code): StreamInterface
+    public function verify(int $amount, string $ref_num, string $card_number, string $tracking_code): \stdClass
     {
         $body = [
             'ref_num' => $ref_num,
@@ -90,11 +89,9 @@ trait Payment
             'sign' => $this->sign($amount . "#" . $ref_num . "#" . $card_number . "#" . $tracking_code),
         ];
 
-        $response = $this->client->request("POST", '/verify', [
+        return json_decode($this->client->post('pardakht/verify', [
             'body' => $body
-        ]);
-
-        return $response->getBody();
+        ])->getBody()->getContents());
     }
 
 }
