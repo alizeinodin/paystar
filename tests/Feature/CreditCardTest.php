@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
+use App\Traits\WithTester;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -10,19 +10,7 @@ use Tests\TestCase;
 class CreditCardTest extends TestCase
 {
     use WithFaker;
-
-    private function getUser()
-    {
-        return User::factory()->create();
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function getCardNumber(): string
-    {
-        return (string) random_int(1000000000000000, 9999999999999999);
-    }
+    use WithTester;
 
     public function test_dont_allowed_as_a_guest()
     {
