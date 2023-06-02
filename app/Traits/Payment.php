@@ -20,7 +20,7 @@ trait Payment
     {
         $this->client = new Client([
             'base_uri' => env('PAYSTAR_BASE_URL'),
-            'timeout' => 2.0,
+            'timeout' => 10.0,
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => "Bearer " . env('PAYSTAR_GATEWAY_ID')
@@ -37,23 +37,21 @@ trait Payment
      * @param int $amount
      * @param int $order_id
      *
-     * @return StreamInterface
+     * @return \stdClass
      * @throws GuzzleException
      */
-    public function create(int $amount, int $order_id): StreamInterface
+    public function create(int $amount, int $order_id): \stdClass
     {
         $body = [
-            'amount' => $amount,
-            'order_id' => $order_id,
-            'callback' => env('paystar_callback_url'),
-            'sign' => $this->sign($amount . "#" . $order_id . "#" . env('paystar_callback_url')),
+            'amount' => (double) $amount,
+            'order_id' => (string) $order_id,
+            'callback' => env('PAYSTAR_CALLBACK_URL'),
+            'sign' => $this->sign($amount . "#" . $order_id . "#" . env('PAYSTAR_CALLBACK_URL')),
         ];
 
-        $response = $this->client->request("POST", '/create', [
-            'body' => $body
-        ]);
-
-        return $response->getBody();
+        return json_decode($this->client->post('pardakht/create', [
+            'form_params' => $body
+        ])->getBody()->getContents());
     }
 
     /**
