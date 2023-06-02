@@ -30,13 +30,18 @@ class OrderController extends Controller
 
         $response = $this->create($order->amount, $order->id);
 
-        if ($response['status'] === 1) {
+        if ($response->status === 1) {
             $order->update([
-                'amount' => $response['payment_amount'],
-                'ref_num' => $response['ref_num'],
+                'amount' => $response->data->payment_amount,
+                'ref_num' => $response->data->ref_num,
             ]);
         }
-        return response()->json($response);
+
+        $response = [
+            'token' => $response->data->token,
+            'amount' => $response->data->payment_amount,
+        ];
+        return response()->json($response, Response::HTTP_CREATED);
     }
 
     /**
