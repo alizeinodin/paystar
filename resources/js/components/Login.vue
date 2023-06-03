@@ -55,34 +55,37 @@ export default {
 
             console.log(this.email, this.password)
 
+            this.signIn()
+
             setTimeout(() => (this.loading = false), 2000)
         },
         required(v) {
             return !!v || 'Field is required'
         },
-    },
-    signIn() {
-        axios({
-            method: 'post',
-            url: 'https://kiwi.ssceb.ir/api/auth/register',
-            timeout: 20000,
-            headers: {
-                'Accept': 'application/json',
-            },
-            data: {
-                email: this.email,
-                password: this.password
-            }
-        }).then((response) => {
-            if (response.status === 200) {
-                localStorage.setItem('token', response.data.access_token)
-                this.$router.push({
-                    path: '/'
-                })
-            } else {
-                alert('ERROR: Please try again!')
-            }
-        })
+        signIn() {
+            axios({
+                method: 'post',
+                url: 'https://kiwi.ssceb.ir/api/auth/login',
+                timeout: 20000,
+                headers: {
+                    'Accept': 'application/json',
+                },
+                data: {
+                    email: this.email,
+                    password: this.password
+                }
+            }).then((response) => {
+                if (response.status === 200) {
+                    console.log(response.data)
+                    localStorage.setItem('token', response.data.access_token)
+                    this.$router.push({
+                        path: '/'
+                    })
+                } else {
+                    alert('ERROR: Please try again!')
+                }
+            })
+        },
     },
 }
 </script>
