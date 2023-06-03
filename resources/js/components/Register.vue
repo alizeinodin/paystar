@@ -89,7 +89,7 @@ export default {
             }).then((response) => {
                 console.log(response)
                 if (response.status === 201) {
-                    localStorage.setItem('token', response.data.access_token)
+                    localStorage.setItem('token', response.data.token)
                     this.$router.push({
                         path: '/'
                     })
