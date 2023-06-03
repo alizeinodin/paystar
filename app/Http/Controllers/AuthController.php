@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -37,5 +40,34 @@ class AuthController extends Controller
         ];
 
         return response()->json($response, Response::HTTP_CREATED);
+    }
+
+
+    /**
+     * @param LoginRequest $request
+     *
+     * @return JsonResponse
+     * @throws ValidationException
+     */
+    public function login(LoginRequest $request): JsonResponse
+    {
+        $cleanData = $request->validated();
+
+        $user = User::where('email', $cleanData['email'])->latest('id')->first();
+
+        if (Auth::attempt(['email' => $cleanData['email'], 'password' => $cleanData['password']])) {
+
+            $response = [
+                'user' => $user,
+                'access_token' => $user->createToken('auth_token')->plainTextToken,
+                'token_type' => 'Bearer',
+            ];
+
+            return \response()->json($response, Response::HTTP_OK);
+        }
+
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.']
+        ]);
     }
 }
