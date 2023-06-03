@@ -82,4 +82,9 @@ class AuthController extends Controller
 
         return response()->json($response, Response::HTTP_NO_CONTENT);
     }
+
+    public function getUser(): ?\Illuminate\Contracts\Auth\Authenticatable
+    {
+        return \auth()->user();
+    }
 }
