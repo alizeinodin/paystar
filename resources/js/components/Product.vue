@@ -21,6 +21,7 @@
             <v-btn
                 color="orange-lighten-2"
                 variant="text"
+                @click="submit()"
             >
                 خرید
             </v-btn>
@@ -50,7 +51,32 @@ export default {
     data: () => ({
         show: false
     }),
-    props: ['title', 'body', 'price']
+    props: ['id', 'title', 'body', 'price'],
+    methods: {
+        submit() {
+            this.checkUser()
+            this.$router.push({
+                path: '/' + this.id + '/card',
+            })
+        },
+        checkUser() {
+            if (!localStorage.getItem('token')) {
+                alert("Please Register or Login first.")
+            }
+            axios({
+                method: 'get',
+                url: 'https://kiwi.ssceb.ir/auth/user',
+                timeout: 20000,
+                headers: {
+                    'Accept': 'application/json',
+                }
+            }).then((response) => {
+                if (response.status != 200) {
+                    alert("Please Register or Login first.")
+                }
+            })
+        }
+    }
 }
 </script>
 
