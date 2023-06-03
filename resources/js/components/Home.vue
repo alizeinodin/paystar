@@ -7,7 +7,7 @@
                 cols="12"
                 sm="4"
             >
-                <Product :title="item.title" :price="item.price" :body="item.body"></Product>
+                <Product :id="item.id" :title="item.title" :price="item.price" :body="item.body"></Product>
             </v-col>
         </v-row>
     </v-container>
