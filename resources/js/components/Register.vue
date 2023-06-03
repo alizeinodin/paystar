@@ -56,6 +56,7 @@ export default {
         email: null,
         password: null,
         loading: false,
+        data: []
     }),
     methods: {
         onSubmit() {
@@ -65,11 +66,38 @@ export default {
 
             console.log(this.email, this.password)
 
+            this.signUp()
+
             setTimeout(() => (this.loading = false), 2000)
         },
         required(v) {
             return !!v || 'Field is required'
         },
+        signUp() {
+            axios({
+                method: 'post',
+                url: 'https://kiwi.ssceb.ir/api/auth/register',
+                timeout: 20000,
+                headers: {
+                    'Accept': 'application/json',
+                },
+                data: {
+                    name: this.name,
+                    email: this.email,
+                    password: this.password
+                }
+            }).then((response) => {
+                console.log(response)
+                if (response.status === 201) {
+                    localStorage.setItem('token', response.data.access_token)
+                    this.$router.push({
+                        path: '/'
+                    })
+                } else {
+                    alert('ERROR: Please try again!')
+                }
+            })
+        }
     },
 }
 </script>
