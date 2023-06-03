@@ -29,7 +29,10 @@ const vuetify = createVuetify({
     directives,
     theme: {
         defaultTheme: 'dark'
-    }
+    },
+    rtl: {
+        customLocale: true,
+    },
 })
 
 app.use(router)
