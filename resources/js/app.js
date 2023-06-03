@@ -6,9 +6,15 @@
 
 import './bootstrap';
 import {createApp} from 'vue';
-import ExampleComponent from './components/ExampleComponent.vue';
 import App from './App.vue'
 import router from './router/index.js'
+
+// vuetify
+// import '@mdi/font/css/materialdesignicons.css'
+import 'vuetify/styles'
+import {createVuetify} from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -17,9 +23,17 @@ import router from './router/index.js'
  */
 
 const app = createApp(App);
-app.use(router)
 
-app.component('example-component', ExampleComponent);
+const vuetify = createVuetify({
+    components,
+    directives,
+    theme: {
+        defaultTheme: 'dark'
+    }
+})
+
+app.use(router)
+app.use(vuetify)
 
 /**
  * The following block of code may be used to automatically register your
