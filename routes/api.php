@@ -44,6 +44,17 @@ Route::middleware('auth:sanctum')->group(function () {
             });
         });
     });
+
+
+    Route::controller(AuthController::class)->group(function () {
+        Route::prefix('/auth')->group(function () {
+            Route::name('auth.')->group(function () {
+                Route::get('/user', 'getUser')
+                    ->name('user');
+            });
+        });
+    });
+
 });
 
 Route::controller(ProductController::class)->group(function () {
@@ -68,9 +79,6 @@ Route::controller(AuthController::class)->group(function () {
 
             Route::post('/logout', 'logout')
                 ->name('logout');
-
-            Route::get('/user', 'getUser')
-                ->name('user');
         });
     });
 });
