@@ -7,26 +7,27 @@
             color="teal"
             grow
         >
-
-            <v-btn>
-                <router-link to="/">
+            <router-link to="/">
+                <v-btn>
                     <v-icon>mdi-home-minus-outline</v-icon>
+                    <span>خانه</span>
+                </v-btn>
+            </router-link>
 
-                    <span>Home</span>
-                </router-link>
-            </v-btn>
+            <router-link to="/register">
+                <v-btn>
+                    <v-icon>mdi-account-plus-outline</v-icon>
+                    <span>ثبت نام</span>
+                </v-btn>
+            </router-link>
 
-            <v-btn>
-                <v-icon>mdi-account-plus-outline</v-icon>
+            <router-link to="/login">
+                <v-btn>
+                    <v-icon>mdi-login-variant</v-icon>
+                    <span>ورود</span>
+                </v-btn>
+            </router-link>
 
-                <span>Register</span>
-            </v-btn>
-
-            <v-btn>
-                <v-icon>mdi-login-variant</v-icon>
-
-                <span>Login</span>
-            </v-btn>
         </v-bottom-navigation>
     </v-layout>
 </template>
