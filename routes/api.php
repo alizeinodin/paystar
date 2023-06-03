@@ -43,16 +43,15 @@ Route::middleware('auth:sanctum')->group(function () {
             });
         });
     });
+});
 
-    Route::controller(ProductController::class)->group(function () {
-        Route::prefix('/product')->group(function () {
-            Route::name('product.')->group(function () {
-                Route::get('/all', 'index')
-                    ->name('all');
-                Route::get('/{product}', 'get')
-                    ->name('get');
-            });
+Route::controller(ProductController::class)->group(function () {
+    Route::prefix('/product')->group(function () {
+        Route::name('product.')->group(function () {
+            Route::get('/all', 'index')
+                ->name('all');
+            Route::get('/{product}', 'get')
+                ->name('get');
         });
     });
-
 });
