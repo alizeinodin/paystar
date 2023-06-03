@@ -3,7 +3,7 @@ import Home from '../components/Home.vue'
 
 const routes = [
     {
-        path: '/buy/home',
+        path: '/',
         component: Home
     }
 ]
