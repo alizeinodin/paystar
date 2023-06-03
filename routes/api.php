@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreditCardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -52,6 +53,24 @@ Route::controller(ProductController::class)->group(function () {
                 ->name('all');
             Route::get('/{product}', 'get')
                 ->name('get');
+        });
+    });
+});
+
+Route::controller(AuthController::class)->group(function () {
+    Route::prefix('/auth')->group(function () {
+        Route::name('auth.')->group(function () {
+            Route::post('/register', 'register')
+                ->name('register');
+
+            Route::post('/login', 'login')
+                ->name('login');
+
+            Route::post('/logout', 'logout')
+                ->name('logout');
+
+            Route::get('/user', 'getUser')
+                ->name('user');
         });
     });
 });
