@@ -25,11 +25,4 @@ export default {
     color: #2c3e50;
     margin-top: 60px;
 }
-@font-face {
-    font-family: IRANSans;
-    font-weight: normal;
-    src: url("./fonts/eot/IRANSansWeb.eot") format("embedded-opentype"),
-    url("./fonts/ttf/IRANSansWeb.ttf") format("truetype"),
-    url("./fonts/woff/IRANSansWeb.woff") format("woff");
-}
 </style>
