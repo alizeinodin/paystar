@@ -56,7 +56,14 @@ class OrderController extends Controller
         if ($request->get('status') === 1) {
             $order = Order::where(['ref_num' => $request->get('ref_num')])->first();
 
-            if ($request->get('card_number') !== $order->creditCard->card_number) {
+            // check card number
+            $card = explode('******', $request->get('card_number'));
+
+            if (
+                $card[0] !== substr($order->creditCard->card_number, 0, 6)
+                or
+                $card[1] !== substr($order->creditCard->card_number, 12, 16)
+            ) {
                 $response = [
                     'message' => "عملیات با شکست مواجه شد. پرداخت باید با کارتی که انتخاب کردید انجام شود. مبلغ پرداختی تا 72 ساعت آینده به حساب شما باز خواهد گشت."
                 ];
@@ -64,6 +71,7 @@ class OrderController extends Controller
                     ->redirectTo("/pay/error");
             }
 
+            // verify request to bank
             $response = $this->verify($order['amount'],
                 $order['ref_num'],
                 $request->get('card_number'),
@@ -89,5 +97,7 @@ class OrderController extends Controller
             return response()
                 ->redirectTo("/pay/success/{$response['price']}/{$response['ref_num']}/{$response['card_number']}");
         }
+        return response()
+            ->redirectTo("/pay/error");
     }
 }
