@@ -3,6 +3,7 @@ import Home from '../components/Home.vue'
 import Register from '../components/Register.vue'
 import Login from '../components/Login.vue'
 import CardPage from '../components/CardPage.vue'
+import PayPage from '../components/PayPage.vue'
 
 const routes = [
     {
@@ -20,10 +21,15 @@ const routes = [
     {
         path: '/:id/card',
         component: CardPage
+    },
+    {
+        path: '/pay/:t/:price?/:ref_num?/:card_number?',
+        component: PayPage
     }
 ]
 
 const router = createRouter({
+    base: '/',
     routes,
     history: createWebHistory()
 })
