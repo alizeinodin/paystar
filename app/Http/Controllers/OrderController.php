@@ -87,6 +87,5 @@ class OrderController extends Controller
             return response()
                 ->json($response, Response::HTTP_ACCEPTED);
         }
-        # TODO implementation error handling
     }
 }
