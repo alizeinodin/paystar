@@ -10,7 +10,8 @@
                 cols="12"
                 sm="4"
             >
-                <CreditCard :id="item.id" :card_number="item.card_number" :product_id="product_id"></CreditCard>
+                <CreditCard :id="item.id" :card_number="item.card_number" :product_id="product_id"
+                            @GoToBank="openPay($event)"></CreditCard>
             </v-col>
         </v-row>
     </v-container>
@@ -67,6 +68,36 @@
         </v-dialog>
     </v-row>
 
+    <!--   pay diolog -->
+    <v-col cols="auto">
+        <v-dialog v-model="isActive"
+                  transition="dialog-bottom-transition"
+                  width="auto"
+        >
+            <template v-slot:default="{ isActive }">
+                <v-card>
+                    <v-toolbar
+                        color="primary"
+                    ></v-toolbar>
+                    <v-card-text>
+                        <div>مبلغ نهایی: {{ amount }}</div>
+                    </v-card-text>
+                    <v-card-actions class="justify-center">
+                        <form action="https://core.paystar.ir/api/pardakht/payment" method="POST">
+                            <input type="hidden" name="token" :value="token">
+                            <input
+                                type="submit"
+                                class="btn-warning"
+                                value="پرداخت"
+                            >
+                        </form>
+                    </v-card-actions>
+                </v-card>
+            </template>
+        </v-dialog>
+    </v-col>
+
+
 </template>
 
 <script>
@@ -87,7 +118,12 @@ export default {
         cards: [],
         product_id: null,
         dialog: false,
-        card_number: null
+        card_number: null,
+        isActive: false,
+        amount: null,
+        token: null,
+        redirect: false,
+        responseData: null
     }),
 
     methods: {
@@ -142,6 +178,32 @@ export default {
             console.log(this.cards)
 
         },
+        openPay(data) {
+            this.amount = data.amount
+            this.token = data.token
+            this.isActive = true
+        }
+        ,
+        redirectToBank() {
+            console.log(this.token, this.amount)
+
+            axios({
+                method: 'post',
+                url: 'https://core.paystar.ir/api/pardakht/payment',
+                timeout: 20000,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: {
+                    token: this.token
+                }
+            }).then((response) => {
+                window.location.href = 'https://core.paystar.ir/api/pardakht/payment'
+            }).catch((response) => {
+                console.log(response)
+                alert("ERROR from bank")
+            })
+        }
     }
 }
 </script>
