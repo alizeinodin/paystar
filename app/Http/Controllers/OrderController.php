@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Traits\Payment;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -47,10 +48,10 @@ class OrderController extends Controller
     /**
      * @param Request $request
      *
-     * @return JsonResponse|void
+     * @return RedirectResponse
      * @throws GuzzleException
      */
-    public function callback(Request $request)
+    public function callback(Request $request): RedirectResponse
     {
         if ($request['status'] === 1) {
             $order = Order::where(['ref_num' => $request['ref_num']])->first();
@@ -59,7 +60,8 @@ class OrderController extends Controller
                 $response = [
                     'message' => "عملیات با شکست مواجه شد. پرداخت باید با کارتی که انتخاب کردید انجام شود. مبلغ پرداختی تا 72 ساعت آینده به حساب شما باز خواهد گشت."
                 ];
-                return response()->json($response, Response::HTTP_PAYMENT_REQUIRED);
+                return response()
+                    ->redirectTo("/pay/error");
             }
 
             $response = $this->verify($order['amount'],
@@ -69,7 +71,7 @@ class OrderController extends Controller
 
             if ($response->status !== 1) {
                 return response()
-                    ->json($response, Response::HTTP_FORBIDDEN);
+                    ->redirectTo("/pay/error");
             }
 
             $order->update([
@@ -85,7 +87,7 @@ class OrderController extends Controller
             ];
 
             return response()
-                ->json($response, Response::HTTP_ACCEPTED);
+                ->redirectTo("/pay/success/{$response['price']}/{$response['ref_num']}/{$response['card_number']}");
         }
     }
 }
