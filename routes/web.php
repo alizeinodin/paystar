@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
+});
+
+Route::controller(OrderController::class)->group(function () {
+    Route::prefix('/order')->group(function () {
+        Route::name('order.')->group(function () {
+            Route::post('/callback', 'callback')
+                ->name('callback');
+        });
+    });
 });
 
 Route::get('/{path?}', function () {
