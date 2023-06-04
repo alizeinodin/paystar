@@ -21,7 +21,7 @@ Route::get('/', function () {
 Route::controller(OrderController::class)->group(function () {
     Route::prefix('/order')->group(function () {
         Route::name('order.')->group(function () {
-            Route::post('/callback', 'callback')
+            Route::get('/callback', 'callback')
                 ->name('callback');
         });
     });
