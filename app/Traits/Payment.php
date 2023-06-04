@@ -91,7 +91,7 @@ trait Payment
         ];
 
         return json_decode($this->client->post('pardakht/verify', [
-            'body' => $body
+            'form_params' => $body
         ])->getBody()->getContents());
     }
 
