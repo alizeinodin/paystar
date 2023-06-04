@@ -53,7 +53,7 @@ class OrderController extends Controller
      */
     public function callback(Request $request): RedirectResponse
     {
-        if ($request->get('status') === 1) {
+        if ($request->get('status') === '1') {
             $order = Order::where(['ref_num' => $request->get('ref_num')])->first();
 
             // check card number
