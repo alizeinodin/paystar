@@ -45,6 +45,7 @@ trait Payment
             'order_id' => (string) $order_id,
             'callback' => env('PAYSTAR_CALLBACK_URL'),
             'sign' => $this->sign($amount . "#" . $order_id . "#" . env('PAYSTAR_CALLBACK_URL')),
+            'callback_method' => 1,
         ];
 
         return json_decode($this->client->post('pardakht/create', [
