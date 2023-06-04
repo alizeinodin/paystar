@@ -53,10 +53,10 @@ class OrderController extends Controller
      */
     public function callback(Request $request): RedirectResponse
     {
-        if ($request['status'] === 1) {
-            $order = Order::where(['ref_num' => $request['ref_num']])->first();
+        if ($request->get('status') === 1) {
+            $order = Order::where(['ref_num' => $request->get('ref_num')])->first();
 
-            if ($request['card_number'] !== $order->creditCard->card_number) {
+            if ($request->get('card_number') !== $order->creditCard->card_number) {
                 $response = [
                     'message' => "عملیات با شکست مواجه شد. پرداخت باید با کارتی که انتخاب کردید انجام شود. مبلغ پرداختی تا 72 ساعت آینده به حساب شما باز خواهد گشت."
                 ];
@@ -66,8 +66,8 @@ class OrderController extends Controller
 
             $response = $this->verify($order['amount'],
                 $order['ref_num'],
-                $request['card_number'],
-                $request['tracking_code']);
+                $request->get('card_number'),
+                $request->get('tracking_code'));
 
             if ($response->status !== 1) {
                 return response()
@@ -75,8 +75,8 @@ class OrderController extends Controller
             }
 
             $order->update([
-                'transaction_id' => $request['transaction_id'],
-                'tracking_code' => $request['tracking_code'],
+                'transaction_id' => $request->get('transaction_id'),
+                'tracking_code' => $request->get('tracking_code'),
                 'status' => OrderStatus::ACCEPTED
             ]);
 
